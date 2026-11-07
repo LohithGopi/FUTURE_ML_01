@@ -1,0 +1,5 @@
+Model,MAE ($),RMSE ($),wMAPE (%),MAPE (%),R2 Score
+Random Forest,2064.64,2866.45,67.06,541.13,0.0895
+XGBoost Regressor,2126.49,2892.55,69.07,553.5,0.0728
+Ridge Regression,2141.95,3028.26,69.57,585.08,-0.0162
+Baseline (Lag-7 Persistence),2807.33,4119.0,91.19,617.56,-0.8801

@@ -1,0 +1,2 @@
+We built FUTURE_ML_01: an end-to-end Machine Learning demand forecasting pipeline that turns 9,994 raw retail orders into predictable 30-day revenue and generates dynamic 90% service-level safety stock buffers to eliminate stockouts.
+Code & models: https://github.com/LohithGopi/FUTURE_ML_01

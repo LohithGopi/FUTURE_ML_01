@@ -40,8 +40,10 @@ ENV/
 .idea/
 *.swp
 
-# OS generated
-Thumbs.db
+# Hyperframes cache & artifacts
+.hyperframes/
+*/.hyperframes/*
+
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/

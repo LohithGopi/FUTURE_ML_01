@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
-    <title>FUTURE_ML_01 — Sales & Demand Forecasting</title>
+    <title>FUTURE_ML_01 — Cinematic Trailer</title>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       :root {
-        --bg: #0b0f19;
-        --surface: #151e2e;
-        --surface-border: #24344d;
+        --bg: #070a11;
+        --surface: #101726;
+        --surface-border: #1e293b;
         --cyan: #00e5ff;
-        --blue: #38bdf8;
-        --green: #34d399;
-        --purple: #a78bfa;
-        --amber: #fbbf24;
-        --text: #f8fafc;
-        --text-muted: #cbd5e1;
+        --cyan-glow: rgba(0, 229, 255, 0.35);
+        --purple: #8b5cf6;
+        --purple-glow: rgba(139, 92, 246, 0.3);
+        --green: #10b981;
+        --text: #ffffff;
+        --text-muted: #94a3b8;
       }
       * {
         margin: 0;
@@ -28,15 +28,52 @@
         height: 1080px;
         overflow: hidden;
         background: var(--bg);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         color: var(--text);
       }
       #root {
         position: relative;
         width: 1920px;
         height: 1080px;
-        background: radial-gradient(circle at 50% 30%, #17243c 0%, #0b0f19 80%);
+        background: radial-gradient(circle at 50% 45%, #131c31 0%, #070a11 75%);
       }
+
+      /* Cinematic Letterbox Bars */
+      .cinematic-bar-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 52px;
+        background: #000000;
+        z-index: 100;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+      }
+      .cinematic-bar-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 1920px;
+        height: 52px;
+        background: #000000;
+        z-index: 100;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Atmospheric Anamorphic Flare */
+      .anamorphic-flare {
+        position: absolute;
+        top: 48%;
+        left: 5%;
+        right: 5%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.5) 50%, transparent 100%);
+        box-shadow: 0 0 35px 4px var(--cyan);
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0.4;
+      }
+
       .scene {
         position: absolute;
         inset: 0;
@@ -46,245 +83,208 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 60px 100px;
+        padding: 80px 120px;
+        z-index: 10;
       }
-      .content-wrap {
+      .film-stage {
         width: 100%;
-        max-width: 1600px;
+        max-width: 1540px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        transform-origin: center center;
       }
 
-      /* Badges & Tags */
-      .badge {
-        display: inline-flex;
+      /* Cinematic Badges & Monoliths */
+      .kicker-tag {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        text-shadow: 0 0 16px var(--cyan-glow);
+        margin-bottom: 24px;
+        display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 20px;
-        border-radius: 9999px;
-        font-size: 18px;
-        font-weight: 700;
+        gap: 16px;
+      }
+      .kicker-tag::before, .kicker-tag::after {
+        content: "";
+        display: inline-block;
+        width: 40px;
+        height: 2px;
+        background: var(--cyan);
+        box-shadow: 0 0 10px var(--cyan);
+      }
+
+      /* Monumental Headlines */
+      .epic-title {
+        font-size: 84px;
+        font-weight: 900;
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+        text-align: center;
+        text-transform: uppercase;
+        color: #ffffff;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.25);
+        margin-bottom: 28px;
+      }
+      .epic-title-accent {
+        background: linear-gradient(180deg, #ffffff 15%, var(--cyan) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: none;
+        filter: drop-shadow(0 0 30px var(--cyan-glow));
+      }
+      .epic-statement {
+        font-size: 32px;
+        font-weight: 500;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        background: rgba(0, 229, 255, 0.12);
-        border: 1px solid var(--cyan);
-        color: var(--cyan);
-        margin-bottom: 24px;
-      }
-      .badge-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--cyan);
-        box-shadow: 0 0 12px var(--cyan);
-      }
-
-      /* Typography */
-      .headline-huge {
-        font-size: 88px;
-        font-weight: 900;
-        line-height: 1.05;
-        letter-spacing: -0.04em;
-        text-align: center;
-        background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 24px;
-      }
-      .headline-cyan {
-        background: linear-gradient(180deg, #ffffff 10%, var(--cyan) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .subhead {
-        font-size: 30px;
-        font-weight: 500;
         color: var(--text-muted);
         text-align: center;
-        max-width: 1100px;
-        line-height: 1.4;
+        max-width: 1200px;
+        line-height: 1.5;
       }
 
-      /* Scene 2: Feature Cards */
-      .card-grid {
+      /* Monolith Feature Cards */
+      .monolith-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
+        gap: 40px;
         width: 100%;
-        margin-top: 48px;
+        margin-top: 50px;
       }
-      .feature-card {
-        background: var(--surface);
-        border: 1px solid var(--surface-border);
+      .monolith-card {
+        background: linear-gradient(180deg, rgba(22, 33, 54, 0.85) 0%, rgba(12, 17, 29, 0.95) 100%);
+        border: 1px solid rgba(0, 229, 255, 0.25);
         border-radius: 20px;
-        padding: 40px 32px;
+        padding: 48px 36px;
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        gap: 18px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
       }
-      .feature-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 14px;
-        background: rgba(56, 189, 248, 0.15);
-        border: 1px solid var(--blue);
-        color: var(--blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
+      .monolith-metric {
+        font-size: 48px;
+        font-weight: 900;
+        color: var(--cyan);
+        letter-spacing: -0.02em;
+        text-shadow: 0 0 24px var(--cyan-glow);
+      }
+      .monolith-name {
+        font-size: 30px;
         font-weight: 800;
-      }
-      .feature-title {
-        font-size: 28px;
-        font-weight: 700;
         color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
       }
-      .feature-desc {
+      .monolith-desc {
         font-size: 20px;
         color: var(--text-muted);
         line-height: 1.5;
       }
-      .feature-tag {
-        margin-top: auto;
-        padding: 6px 14px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--cyan);
-        width: fit-content;
-      }
 
-      /* Scene 3: Leaderboard */
-      .leaderboard {
-        width: 100%;
-        max-width: 1200px;
+      /* Duel Leaderboard */
+      .duel-container {
         display: flex;
-        flex-direction: column;
-        gap: 16px;
-        margin-top: 40px;
-      }
-      .leader-row {
-        background: var(--surface);
-        border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 24px 36px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .leader-name {
-        font-size: 26px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-      .leader-metrics {
-        display: flex;
-        align-items: center;
         gap: 40px;
-      }
-      .metric-box {
-        text-align: right;
-      }
-      .metric-label {
-        font-size: 14px;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .metric-value {
-        font-size: 26px;
-        font-weight: 800;
-        color: #ffffff;
-      }
-      .leader-winner {
-        background: linear-gradient(90deg, rgba(16, 185, 129, 0.15), rgba(0, 229, 255, 0.15));
-        border: 2px solid var(--green);
-        box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);
-      }
-      .winner-badge {
-        padding: 4px 12px;
-        background: var(--green);
-        color: #064e3b;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 900;
-        letter-spacing: 0.05em;
-      }
-
-      /* Scene 4: Forecast Graph */
-      .forecast-box {
         width: 100%;
         max-width: 1300px;
+        margin-top: 40px;
+      }
+      .duel-card {
+        flex: 1;
         background: var(--surface);
         border: 1px solid var(--surface-border);
         border-radius: 24px;
-        padding: 40px 48px;
+        padding: 50px 44px;
         display: flex;
         flex-direction: column;
-        gap: 28px;
-        margin-top: 32px;
+        gap: 20px;
       }
-      .stat-highlight-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        padding-bottom: 24px;
-        border-bottom: 1px solid var(--surface-border);
+      .duel-winner {
+        background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(12, 18, 30, 0.95) 100%);
+        border: 2px solid var(--green);
+        box-shadow: 0 0 50px rgba(16, 185, 129, 0.35);
       }
-      .stat-highlight {
-        text-align: center;
+      .duel-header {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
       }
-      .stat-highlight-val {
-        font-size: 54px;
+      .duel-value {
+        font-size: 68px;
         font-weight: 900;
-        color: var(--cyan);
-        letter-spacing: -0.02em;
-      }
-      .stat-highlight-lbl {
-        font-size: 18px;
-        color: var(--text-muted);
-        margin-top: 4px;
-      }
-      .chart-container {
-        width: 100%;
-        height: 280px;
-        position: relative;
-      }
-      svg {
-        width: 100%;
-        height: 100%;
-        overflow: visible;
+        letter-spacing: -0.03em;
+        line-height: 1.0;
       }
 
-      /* Scene 5: Outro */
-      .outro-box {
-        background: var(--surface);
-        border: 1px solid var(--cyan);
-        border-radius: 32px;
-        padding: 64px 80px;
+      /* Forecast Horizon */
+      .cinematic-hud {
+        width: 100%;
+        max-width: 1400px;
+        background: rgba(14, 21, 37, 0.85);
+        border: 1px solid rgba(0, 229, 255, 0.3);
+        border-radius: 28px;
+        padding: 44px 54px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        box-shadow: 0 35px 70px rgba(0, 0, 0, 0.7);
+        margin-top: 32px;
+      }
+      .hud-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 24px;
+      }
+      .hud-num {
+        font-size: 64px;
+        font-weight: 900;
+        color: var(--cyan);
+        letter-spacing: -0.03em;
+        text-shadow: 0 0 30px var(--cyan-glow);
+      }
+      .hud-sub {
+        font-size: 20px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+
+      /* Outro Monument */
+      .monument {
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 0 0 60px rgba(0, 229, 255, 0.2);
-        max-width: 900px;
       }
-      .repo-link {
-        margin-top: 28px;
-        padding: 14px 32px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid var(--surface-border);
+      .monument-title {
+        font-size: 110px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #ffffff;
+        text-shadow: 0 0 60px rgba(0, 229, 255, 0.5);
+      }
+      .monument-tag {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-top: 16px;
+      }
+      .monument-meta {
         font-size: 22px;
-        font-weight: 600;
-        color: var(--blue);
-        font-family: monospace;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+        margin-top: 24px;
       }
     </style>
   </head>
@@ -293,365 +293,243 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="19"
+      data-duration="20"
       data-width="1920"
       data-height="1080"
     >
-      <!-- Background Audio -->
+      <!-- Letterbox Framing -->
+      <div class="cinematic-bar-top"></div>
+      <div class="cinematic-bar-bottom"></div>
+      <div class="anamorphic-flare"></div>
+
+      <!-- Soundtrack -->
       <audio
         id="bg-music"
         class="clip"
         data-start="0"
-        data-duration="19"
+        data-duration="20"
         data-track-index="0"
-        src="assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3"
+        src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"
       ></audio>
 
-      <!-- SCENE 1: The Hook (0 - 3.5s) -->
-      <div id="scene-1" class="clip scene" data-start="0" data-duration="3.5" data-track-index="1">
-        <div id="s1-content" class="content-wrap">
-          <div class="badge">
-            <span class="badge-dot"></span>
-            Machine Learning Task 1 · 2026
-          </div>
-          <h1 class="headline-huge">
-            STOP GUESSING<br />
-            <span class="headline-cyan">INVENTORY DEMAND.</span>
+      <!-- SCENE 1: The World Premise (0.0s - 4.0s) -->
+      <div id="scene-1" class="clip scene" data-start="0" data-duration="4.0" data-track-index="1">
+        <div id="stage-1" class="film-stage">
+          <div class="kicker-tag">A Machine Learning Production</div>
+          <h1 class="epic-title">
+            EVERY BUSINESS<br />
+            <span class="epic-title-accent">RUNS ON INVENTORY.</span>
           </h1>
-          <p class="subhead">
-            9,994 retail orders transformed into an automated, zero-leakage forecasting engine.
+          <p class="epic-statement">
+            Most run on guesswork.
           </p>
         </div>
       </div>
 
-      <!-- SCENE 2: The Feature Engine (3.5 - 7.5s) -->
-      <div id="scene-2" class="clip scene" data-start="3.5" data-duration="4.0" data-track-index="1">
-        <div id="s2-content" class="content-wrap">
-          <div class="badge">
-            <span class="badge-dot"></span>
-            Temporal Feature Engineering
-          </div>
-          <h2 class="headline-huge" style="font-size: 64px; margin-bottom: 12px;">
-            Zero Data Leakage Pipeline
+      <!-- SCENE 2: The Intelligence Engine (4.0s - 8.0s) -->
+      <div id="scene-2" class="clip scene" data-start="4.0" data-duration="4.0" data-track-index="1">
+        <div id="stage-2" class="film-stage">
+          <div class="kicker-tag">Data Architecture</div>
+          <h2 class="epic-title" style="font-size: 68px; margin-bottom: 8px;">
+            1,458 DAYS OF TEMPORAL INTEL
           </h2>
-          <p class="subhead">
-            Continuous 1,458-day timeline with rigorous t-1 shifted indicators.
+          <p class="epic-statement" style="font-size: 26px;">
+            Strict chronological shift(1) — zero future information leakage.
           </p>
 
-          <div class="card-grid">
-            <div id="card-1" class="feature-card">
-              <div class="feature-icon">t-7</div>
-              <div class="feature-title">Autoregressive Lags</div>
-              <div class="feature-desc">Captures weekly retail cycles across t-1, t-7, t-14, and t-30 intervals.</div>
-              <div class="feature-tag">Autoregression</div>
+          <div class="monolith-grid">
+            <div id="m-1" class="monolith-card">
+              <div class="monolith-metric">9,994</div>
+              <div class="monolith-name">Verified Orders</div>
+              <div class="monolith-desc">Continuous daily aggregation across 4 years of retail operations.</div>
             </div>
-            <div id="card-2" class="feature-card">
-              <div class="feature-icon">sin</div>
-              <div class="feature-title">Cyclical Encodings</div>
-              <div class="feature-desc">Continuous trigonometric sine and cosine mappings for months and weekdays.</div>
-              <div class="feature-tag">Seasonality</div>
+            <div id="m-2" class="monolith-card">
+              <div class="monolith-metric">35 Lags</div>
+              <div class="monolith-name">Temporal Features</div>
+              <div class="monolith-desc">Weekly autoregression (t-1 to t-30) & cyclical trigonometric seasons.</div>
             </div>
-            <div id="card-3" class="feature-card">
-              <div class="feature-icon">EMA</div>
-              <div class="feature-title">Rolling Volatility</div>
-              <div class="feature-desc">7d, 14d, and 30d rolling averages and exponential moving smoothing.</div>
-              <div class="feature-tag">Momentum</div>
+            <div id="m-3" class="monolith-card">
+              <div class="monolith-metric">Zero</div>
+              <div class="monolith-name">Data Leakage</div>
+              <div class="monolith-desc">Strict time boundary evaluation prevents lookahead bias.</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SCENE 3: The Benchmark Leaderboard (7.5 - 12.0s) -->
-      <div id="scene-3" class="clip scene" data-start="7.5" data-duration="4.5" data-track-index="1">
-        <div id="s3-content" class="content-wrap">
-          <div class="badge" style="border-color: var(--amber); color: var(--amber);">
-            <span class="badge-dot" style="background: var(--amber); box-shadow: 0 0 12px var(--amber);"></span>
-            90-Day Out-of-Time Holdout Benchmark
-          </div>
-          <h2 class="headline-huge" style="font-size: 60px; margin-bottom: 8px;">
-            Model Accuracy Leaderboard
+      <!-- SCENE 3: The Benchmark Showdown (8.0s - 12.5s) -->
+      <div id="scene-3" class="clip scene" data-start="8.0" data-duration="4.5" data-track-index="1">
+        <div id="stage-3" class="film-stage">
+          <div class="kicker-tag" style="color: var(--green);">Out-Of-Time Forward Testing</div>
+          <h2 class="epic-title" style="font-size: 68px; margin-bottom: 8px;">
+            STRICT 90-DAY SHOWDOWN
           </h2>
-          <p class="subhead">
+          <p class="epic-statement" style="font-size: 26px;">
             Benchmarked against the retail-standard Weighted MAPE (wMAPE).
           </p>
 
-          <div class="leaderboard">
-            <div id="row-1" class="leader-row">
-              <div class="leader-name">
-                <span style="color: var(--text-muted);">04</span>
-                Baseline (Lag-7 Persistence)
-              </div>
-              <div class="leader-metrics">
-                <div class="metric-box">
-                  <div class="metric-label">wMAPE</div>
-                  <div class="metric-value" style="color: #ef4444;">91.19%</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">Mean Dollar Error</div>
-                  <div class="metric-value">$2,807.33</div>
-                </div>
+          <div class="duel-container">
+            <div id="duel-left" class="duel-card">
+              <div class="duel-header" style="color: #ef4444;">Naive Moving Average</div>
+              <div class="duel-value" style="color: #ef4444;">91.19%</div>
+              <div class="epic-statement" style="text-align: left; font-size: 22px;">
+                Lag-7 persistence baseline fails to anticipate seasonal demand surges.
               </div>
             </div>
 
-            <div id="row-2" class="leader-row">
-              <div class="leader-name">
-                <span style="color: var(--text-muted);">03</span>
-                Ridge Regression (Linear L2)
-              </div>
-              <div class="leader-metrics">
-                <div class="metric-box">
-                  <div class="metric-label">wMAPE</div>
-                  <div class="metric-value">69.57%</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">Mean Dollar Error</div>
-                  <div class="metric-value">$2,141.95</div>
-                </div>
-              </div>
-            </div>
-
-            <div id="row-3" class="leader-row">
-              <div class="leader-name">
-                <span style="color: var(--text-muted);">02</span>
-                XGBoost Regressor
-              </div>
-              <div class="leader-metrics">
-                <div class="metric-box">
-                  <div class="metric-label">wMAPE</div>
-                  <div class="metric-value">69.07%</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">Mean Dollar Error</div>
-                  <div class="metric-value">$2,126.49</div>
-                </div>
-              </div>
-            </div>
-
-            <div id="row-winner" class="leader-row leader-winner">
-              <div class="leader-name">
-                <span class="winner-badge">WINNER</span>
-                Random Forest Regressor
-              </div>
-              <div class="leader-metrics">
-                <div class="metric-box">
-                  <div class="metric-label">wMAPE</div>
-                  <div class="metric-value" style="color: var(--green);">67.06%</div>
-                </div>
-                <div class="metric-box">
-                  <div class="metric-label">Mean Dollar Error</div>
-                  <div class="metric-value" style="color: #ffffff;">$2,064.64</div>
-                </div>
+            <div id="duel-right" class="duel-card duel-winner">
+              <div class="duel-header" style="color: var(--green);">🏆 Random Forest Model</div>
+              <div class="duel-value" style="color: #ffffff;">67.06%</div>
+              <div class="epic-statement" style="text-align: left; font-size: 22px; color: #ffffff;">
+                Lowest weighted percentage error with $2,064 mean dollar accuracy.
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SCENE 4: 30-Day Forward Forecast & Safety Stock (12.0 - 16.5s) -->
-      <div id="scene-4" class="clip scene" data-start="12.0" data-duration="4.5" data-track-index="1">
-        <div id="s4-content" class="content-wrap">
-          <div class="badge" style="border-color: var(--green); color: var(--green);">
-            <span class="badge-dot" style="background: var(--green); box-shadow: 0 0 12px var(--green);"></span>
-            Operational Planning Horizon
-          </div>
-          <h2 class="headline-huge" style="font-size: 60px; margin-bottom: 8px;">
-            30-Day Forward Forecast & Safety Buffer
+      <!-- SCENE 4: Forward Horizon & Safety Envelope (12.5s - 17.0s) -->
+      <div id="scene-4" class="clip scene" data-start="12.5" data-duration="4.5" data-track-index="1">
+        <div id="stage-4" class="film-stage">
+          <div class="kicker-tag">Predictive Foresight</div>
+          <h2 class="epic-title" style="font-size: 68px; margin-bottom: 8px;">
+            SEE 30 DAYS INTO THE FUTURE
           </h2>
 
-          <div class="forecast-box">
-            <div class="stat-highlight-row">
-              <div class="stat-highlight">
-                <div id="stat-sales" class="stat-highlight-val">$72,141.44</div>
-                <div class="stat-highlight-lbl">Projected 30-Day Sales Volume</div>
+          <div class="cinematic-hud">
+            <div class="hud-stats">
+              <div>
+                <div class="hud-num">$72,141.44</div>
+                <div class="hud-sub">Projected 30-Day Revenue Target</div>
               </div>
-              <div class="stat-highlight">
-                <div class="stat-highlight-val" style="color: var(--green);">90% Service Level</div>
-                <div class="stat-highlight-lbl">Dynamic Safety Stock Buffer ($5,170 Peak)</div>
-              </div>
-              <div class="stat-highlight">
-                <div class="stat-highlight-val" style="color: var(--blue);">Zero Stockouts</div>
-                <div class="stat-highlight-lbl">14-Day Advance Procurement Lead Time</div>
+              <div style="text-align: right;">
+                <div class="hud-num" style="color: var(--green);">$5,169.86</div>
+                <div class="hud-sub">Dynamic 90% Service Level Buffer</div>
               </div>
             </div>
 
-            <!-- Visual SVG Chart -->
-            <div class="chart-container">
-              <svg viewBox="0 0 1200 240" preserveAspectRatio="none">
+            <div style="width: 100%; height: 240px;">
+              <svg viewBox="0 0 1200 220" preserveAspectRatio="none" style="width: 100%; height: 100%;">
                 <defs>
-                  <linearGradient id="bufferGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.35" />
-                    <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.02" />
+                  <linearGradient id="envelopeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.45" />
+                    <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.03" />
                   </linearGradient>
                 </defs>
 
-                <!-- Grid lines -->
-                <line x1="0" y1="60" x2="1200" y2="60" stroke="#24344d" stroke-width="1" stroke-dasharray="6,6" />
-                <line x1="0" y1="120" x2="1200" y2="120" stroke="#24344d" stroke-width="1" stroke-dasharray="6,6" />
-                <line x1="0" y1="180" x2="1200" y2="180" stroke="#24344d" stroke-width="1" stroke-dasharray="6,6" />
+                <!-- Cinematic Horizon Lines -->
+                <line x1="0" y1="50" x2="1200" y2="50" stroke="#1e293b" stroke-width="1" stroke-dasharray="8,8" />
+                <line x1="0" y1="110" x2="1200" y2="110" stroke="#1e293b" stroke-width="1" stroke-dasharray="8,8" />
+                <line x1="0" y1="170" x2="1200" y2="170" stroke="#1e293b" stroke-width="1" stroke-dasharray="8,8" />
 
-                <!-- Shaded Safety Stock Buffer Envelope -->
+                <!-- 90% Safety Stock Envelope -->
                 <polygon
-                  id="safety-envelope"
-                  points="500,70 600,60 700,50 800,80 900,40 1000,55 1100,30 1180,45 1180,195 1100,180 1000,190 900,170 800,200 700,185 600,190 500,195"
-                  fill="url(#bufferGrad)"
+                  id="hud-envelope"
+                  points="450,55 580,45 720,35 850,75 970,30 1080,45 1180,25 1180,185 1080,170 970,180 850,160 720,190 580,175 450,185"
+                  fill="url(#envelopeGrad)"
                 />
 
-                <!-- Historical actual curve (gray) -->
-                <path
-                  id="hist-path"
-                  d="M 20,160 Q 120,80 240,140 T 500,130"
-                  fill="none"
-                  stroke="#64748b"
-                  stroke-width="3"
-                />
+                <!-- Historical actual curve -->
+                <path d="M 20,150 Q 150,70 300,130 T 450,120" fill="none" stroke="#64748b" stroke-width="3" />
 
-                <!-- Forecasted demand curve (luminous teal) -->
+                <!-- Forward Projected Curve -->
                 <path
-                  id="forecast-path"
-                  d="M 500,130 Q 650,90 800,140 T 950,80 T 1100,110 T 1180,95"
+                  id="hud-curve"
+                  d="M 450,120 Q 600,75 750,130 T 920,65 T 1060,100 T 1180,80"
                   fill="none"
                   stroke="#00e5ff"
                   stroke-width="5"
+                  filter="drop-shadow(0 0 12px #00e5ff)"
                 />
 
-                <!-- Peak marker -->
-                <circle cx="1100" cy="110" r="8" fill="#34d399" stroke="#ffffff" stroke-width="3" />
-                <text x="1050" y="85" fill="#34d399" font-size="16" font-weight="800">Peak Demand</text>
+                <circle cx="1060" cy="100" r="9" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+                <text x="1000" y="70" fill="#83dbbe" font-size="18" font-weight="900" letter-spacing="2">PEAK DEMAND</text>
               </svg>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SCENE 5: Outro & GitHub Repository (16.5 - 19.0s) -->
-      <div id="scene-5" class="clip scene" data-start="16.5" data-duration="2.5" data-track-index="1">
-        <div id="s5-content" class="outro-box">
-          <div class="badge">
-            <span class="badge-dot"></span>
-            Future Interns ML Task 1
-          </div>
-          <h1 class="headline-huge" style="font-size: 80px; margin-bottom: 12px;">
+      <!-- SCENE 5: Monumental Outro (17.0s - 20.0s) -->
+      <div id="scene-5" class="clip scene" data-start="17.0" data-duration="3.0" data-track-index="1">
+        <div id="stage-5" class="film-stage monument">
+          <div class="kicker-tag">Future Interns · Task 1</div>
+          <h1 class="monument-title">
             FUTURE_ML_01
           </h1>
-          <p class="subhead" style="font-size: 26px;">
-            Enterprise Sales & Demand Forecasting Pipeline
-          </p>
-          <div class="repo-link">
-            github.com/LohithGopi/FUTURE_ML_01
+          <div class="monument-tag">
+            Demand Intelligence for the Enterprise
           </div>
+          <p class="monument-meta">
+            github.com/LohithGopi/FUTURE_ML_01
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- GSAP Master Timeline -->
+    <!-- GSAP Cinematic Camera Rig -->
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      // Scene 1 Tweens (0 - 3.5s)
-      tl.fromTo("#s1-content", 
-        { opacity: 0, scale: 0.94 }, 
-        { opacity: 1, scale: 1.0, duration: 0.8, ease: "power3.out" }, 
-        0.1
+      // Scene 1: Slow majestic camera push (0.0s - 4.0s)
+      tl.fromTo("#stage-1", 
+        { opacity: 1, scale: 0.95 }, 
+        { opacity: 1, scale: 1.04, duration: 3.5, ease: "none" }, 
+        0
       );
-      tl.to("#s1-content", 
-        { opacity: 0, scale: 1.05, duration: 0.4, ease: "power2.in" }, 
-        3.1
-      );
-
-      // Scene 2 Tweens (3.5 - 7.5s)
-      tl.fromTo("#s2-content > .badge, #s2-content > h2, #s2-content > p", 
-        { opacity: 0, y: 20 }, 
-        { opacity: 1, y: 0, stagger: 0.12, duration: 0.6, ease: "power3.out" }, 
-        3.6
-      );
-      tl.fromTo("#card-1", 
-        { opacity: 0, y: 40 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" }, 
-        4.1
-      );
-      tl.fromTo("#card-2", 
-        { opacity: 0, y: 40 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" }, 
-        4.4
-      );
-      tl.fromTo("#card-3", 
-        { opacity: 0, y: 40 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" }, 
-        4.7
-      );
-      tl.to("#s2-content", 
-        { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" }, 
-        7.1
+      tl.to("#stage-1", 
+        { opacity: 0, scale: 1.08, duration: 0.5, ease: "power2.in" }, 
+        3.5
       );
 
-      // Scene 3 Tweens (7.5 - 12.0s)
-      tl.fromTo("#s3-content > .badge, #s3-content > h2, #s3-content > p", 
-        { opacity: 0, y: 20 }, 
-        { opacity: 1, y: 0, stagger: 0.12, duration: 0.6, ease: "power3.out" }, 
-        7.6
-      );
-      tl.fromTo("#row-1", 
-        { opacity: 0, x: -30 }, 
-        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 
-        8.2
-      );
-      tl.fromTo("#row-2", 
-        { opacity: 0, x: -30 }, 
-        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 
-        8.6
-      );
-      tl.fromTo("#row-3", 
-        { opacity: 0, x: -30 }, 
-        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 
-        9.0
-      );
-      tl.fromTo("#row-winner", 
-        { opacity: 0, scale: 0.95 }, 
-        { opacity: 1, scale: 1.03, duration: 0.6, ease: "back.out(1.6)" }, 
-        9.5
-      );
-      tl.to("#row-winner", 
-        { scale: 1.0, duration: 0.3, ease: "power1.out" }, 
-        10.1
-      );
-      tl.to("#s3-content", 
-        { opacity: 0, scale: 0.96, duration: 0.4, ease: "power2.in" }, 
-        11.6
-      );
-
-      // Scene 4 Tweens (12.0 - 16.5s)
-      tl.fromTo("#s4-content > .badge, #s4-content > h2", 
-        { opacity: 0, y: 20 }, 
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 
-        12.1
-      );
-      tl.fromTo(".forecast-box", 
+      // Scene 2: The Monolith Engine (4.0s - 8.0s)
+      tl.fromTo("#stage-2", 
         { opacity: 0, scale: 0.96 }, 
-        { opacity: 1, scale: 1.0, duration: 0.6, ease: "power3.out" }, 
-        12.4
+        { opacity: 1, scale: 1.0, duration: 0.8, ease: "power2.out" }, 
+        4.0
       );
-      tl.fromTo("#forecast-path", 
-        { opacity: 0, strokeDasharray: 1000, strokeDashoffset: 1000 }, 
-        { opacity: 1, strokeDashoffset: 0, duration: 1.4, ease: "power2.out" }, 
-        12.8
-      );
-      tl.fromTo("#safety-envelope", 
-        { opacity: 0 }, 
-        { opacity: 1, duration: 0.8, ease: "power2.out" }, 
-        13.5
-      );
-      tl.to("#s4-content", 
-        { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" }, 
-        16.1
-      );
+      tl.fromTo("#m-1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 4.4);
+      tl.fromTo("#m-2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 4.7);
+      tl.fromTo("#m-3", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 5.0);
+      tl.to("#stage-2", { opacity: 0, scale: 1.04, duration: 0.5, ease: "power2.in" }, 7.5);
 
-      // Scene 5 Tweens (16.5 - 19.0s)
-      tl.fromTo("#s5-content", 
-        { opacity: 0, scale: 0.88 }, 
-        { opacity: 1, scale: 1.0, duration: 0.7, ease: "back.out(1.5)" }, 
-        16.7
+      // Scene 3: The Showdown Duel (8.0s - 12.5s)
+      tl.fromTo("#stage-3", 
+        { opacity: 0, scale: 0.96 }, 
+        { opacity: 1, scale: 1.0, duration: 0.8, ease: "power2.out" }, 
+        8.0
       );
+      tl.fromTo("#duel-left", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power2.out" }, 8.5);
+      tl.fromTo("#duel-right", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1.03, duration: 0.8, ease: "back.out(1.5)" }, 9.0);
+      tl.to("#duel-right", { scale: 1.0, duration: 0.4 }, 9.8);
+      tl.to("#stage-3", { opacity: 0, scale: 0.95, duration: 0.5, ease: "power2.in" }, 12.0);
+
+      // Scene 4: Forward Horizon (12.5s - 17.0s)
+      tl.fromTo("#stage-4", 
+        { opacity: 0, scale: 0.96 }, 
+        { opacity: 1, scale: 1.0, duration: 0.8, ease: "power2.out" }, 
+        12.5
+      );
+      tl.fromTo("#hud-curve", 
+        { opacity: 0, strokeDasharray: 1200, strokeDashoffset: 1200 }, 
+        { opacity: 1, strokeDashoffset: 0, duration: 1.8, ease: "power2.out" }, 
+        13.0
+      );
+      tl.fromTo("#hud-envelope", 
+        { opacity: 0 }, 
+        { opacity: 1, duration: 1.0, ease: "power2.out" }, 
+        13.8
+      );
+      tl.to("#stage-4", { opacity: 0, scale: 1.05, duration: 0.5, ease: "power2.in" }, 16.5);
+
+      // Scene 5: Monumental Outro (17.0s - 20.0s)
+      tl.fromTo("#stage-5", 
+        { opacity: 0, scale: 0.90 }, 
+        { opacity: 1, scale: 1.02, duration: 1.2, ease: "power3.out" }, 
+        17.0
+      );
+      tl.to("#stage-5", { scale: 1.0, duration: 1.8, ease: "none" }, 18.2);
 
       window.__timelines["main"] = tl;
       tl.seek(0);

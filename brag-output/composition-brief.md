@@ -35,5 +35,9 @@ Create a trailer-scale, cinematic launch video for **FUTURE_ML_01 (Sales & Deman
 - Text Muted: `#94a3b8`
 
 ## Audio
-- Track: `assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3`
-- Treatment: Driving trailer rhythm with smooth fade-out over the final 1.5s.
+- Track: `assets/music/impact-moderato.mp3` (Kevin MacLeod — Cinematic Trailer / Soundtrack)
+- Sound Design:
+  - `assets/sfx/impact-bass-1.mp3` (Sub-bass hits at 0.0s and 12.5s)
+  - `assets/sfx/whoosh-cinematic.mp3` (Transition whoosh at 3.8s)
+  - `assets/sfx/riser.mp3` (Tension riser leading into the 30-day forecast at 10.8s)
+- Treatment: Driving orchestral cinematic build with layered trailer impacts and risers.

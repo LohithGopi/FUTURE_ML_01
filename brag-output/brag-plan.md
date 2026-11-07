@@ -47,11 +47,15 @@ We built a production ML forecasting engine that predicts 30-day demand with dyn
 https://github.com/LohithGopi/FUTURE_ML_01
 
 ## Audio direction
-- Role: Dramatic cinematic electronic pulse with driving low end.
-- Music: `happy-beats-business-moves-vol-12-by-ende-dot-app.mp3`
-- Music treatment: Deep resonant groove with steady trailer drive, building toward the forward horizon reveal and fading smoothly under the final title slam.
-- Cue guidance: Key strong cues at 8.74s, 13.11s, 17.47s aligning to major scene transitions.
-- Restraint rule: Sophisticated, modern cinematic pulse; no cheap explosion effects.
+- Role: Monumental cinematic orchestral trailer pulse with driving timpani, strings, brass, and sub-bass impacts.
+- Music: `impact-moderato.mp3` by Kevin MacLeod (100 BPM Soundtrack / Trailer).
+- Music treatment: Deep orchestral pulse swelling across scenes and concluding on a sustained resonant resolve under the title slam.
+- Sound Design Layers:
+  - 0.0s: Opening sub-bass impact hit (`impact-bass-1.mp3`)
+  - 3.8s: Transition cinematic whoosh (`whoosh-cinematic.mp3`)
+  - 10.8s: Tension riser into the 30-day forecast (`riser.mp3`)
+  - 12.5s: Demand forecast reveal impact hit (`impact-bass-1.mp3`)
+- Restraint rule: High-fidelity cinematic mixing; crisp levels balanced against the primary soundtrack.
 
 ## Storyboard
 
